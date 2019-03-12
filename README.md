@@ -64,8 +64,8 @@ ffprobe -v quiet -print_format json -show_streams -show_format /www/web/ffmpeg-d
 
 参数说明：
 
-- `print_format`：输出格式，这里设置为 json　输出；
-- `show_streams`：显示 streams　信息；
+- `print_format`：输出格式，这里设置为 json 输出；
+- `show_streams`：显示 streams 信息；
 - `show_format`：显示封装格式信息；
 
 ### 2. 从原视频提取字幕文件
@@ -129,9 +129,9 @@ ffmpeg -analyzeduration 100000000 -i /www/web/ffmpeg-demo/movie/0/example.mp4 -s
 说明：原画是为了转码后的视频播放时清晰度跟原视频一样而设。
 因为有些视频是介入 640-1024、1024-1280 等区间，这些视频如果被转成较低清晰度，那么效果将没有那么好。
 
-#### 3.1 获取音频信息
+#### 3.1 提高视频音量
 
-有些视频的音量比较低，需要通过转码提高音量。
+有些视频的音量比较低，需要通过转码提高音量，以下是获取音量信息的命令，提高音量的命令请查看源代码。
 
 ```bash
 ffmpeg -i /www/web/ffmpeg-demo/movie/0/example.mp4 -map 0:a -q:a 0 -af volumedetect -f null null
