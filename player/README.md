@@ -19,7 +19,7 @@ server {
 - videojs 能根据当前窗口大小以及用户的网速加载不同清晰度的 m3u8 文件；
 - 多音轨和字幕切换 videojs 也是支持的，但是由于时间和专业方向不同的关系，自己就不做过多研究了；
 
-## HLS
+## hls.js
 
 hls 目录下有一个比较好的基于 [hls.js](https://github.com/video-dev/hls.js) 的视频播放器，
 效果预览：http://localhost/player/hls/?url=http://localhost/player/example0.m3u8
