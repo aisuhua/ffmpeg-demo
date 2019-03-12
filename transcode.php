@@ -1,10 +1,19 @@
 <?php
 /**
- * 提取视频
- * 获取视频长和宽、码率、音轨、音轨码率、字幕和附件等信息
+ * 视频转码
+ *
+ * 如有不理解的地方请看代码注释
  */
-$movie_path = __DIR__.'/movie/0';
+$movie_path = __DIR__.'/movie/1';
 $movie_file = $movie_path . '/example.mp4';
+
+// 创建转码结果输出的目录
+$dirs = ['hls', 'image_group', 'mp4', 'stage_photo', 'subtitle'];
+foreach ($dirs as $dir) {
+    if (!is_dir($movie_path . '/' . $dir)) {
+        mkdir($movie_path . '/' . $dir);
+    }
+}
 
 // ========================第1步：获取视频基本信息======================== //
 $shell = "ffprobe -v quiet -print_format json -show_streams -show_format {$movie_file}";
@@ -58,7 +67,7 @@ $definitions = [
     3, // 超清 1280
     4, // 1080P 1920
     5, // 4K 3940
-    // 100 // 原画 动态
+    100 // 原画
 ];
 
 // 清晰度与码率的对应关系
@@ -86,11 +95,9 @@ $ffmpeg_cmd = "ffmpeg -analyzeduration 100000000 -i {$movie_file} -sn -dn";
 
 // 提高视频音量
 $increase_volume = '';
-
-// 获取片源的音量信息
+// 获取片源的音频信息
 $shell = "ffmpeg -i {$movie_file} -map 0:a -q:a 0 -af volumedetect -f null null 2>&1";
 echo $shell, PHP_EOL;
-
 $output = shell_exec($shell);
 if ($output) {
     $volume_info = [];
@@ -217,7 +224,7 @@ foreach ($mp4_files as $definition => $mp4_file) {
     $shell = "ffmpeg -i {$mp4_file} -map 0 -c copy -bsf h264_mp4toannexb -f segment";
     $shell .= " -segment_list {$m3u8_file} -segment_time 10 -y {$ts_file}";
     echo $shell, PHP_EOL;
-    system($shell);
+    // system($shell);
 }
 
 // ========================第5步：生成缩略图、预览图======================= //
@@ -242,7 +249,7 @@ $shell = "ffmpeg -analyzeduration 100000000 -i {$mp4_file} -vsync 0 -ss {$thumb_
 $shell .= " -vsync 1 -vf 'fps=1/{$oi_interval},scale={$oi_width}:{$oi_height},tile={$cols}x{$rows}' -f image2 -y {$oi_file}";
 
 echo $shell, PHP_EOL;
-system($shell);
+// system($shell);
 
 // ========================第5步：生成剧照======================= //
 // 使用最高清晰度的视频生成剧照
