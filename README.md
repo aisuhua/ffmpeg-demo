@@ -185,6 +185,8 @@ ffmpeg -analyzeduration 100000000 -ss 10 -i /www/web/ffmpeg-demo/movie/0/mp4/4.m
 
 另外，以上例子仅仅是为了展示 ffmpeg 的基本用法，很多命令的参数需要根据自己的业务场景进行调整，读者务必注意。
 
+**播放转码后的 M3U8 文件，可参考 [player](player) 目录的示例。**
+
 ## 参考文献
 
 - [FFmpeg 官网](https://ffmpeg.org/index.html)
