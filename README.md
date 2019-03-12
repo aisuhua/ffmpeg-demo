@@ -190,3 +190,4 @@ ffmpeg -analyzeduration 100000000 -ss 10 -i /www/web/ffmpeg-demo/movie/0/mp4/4.m
 ## 参考文献
 
 - [FFmpeg 官网](https://ffmpeg.org/index.html)
+- [一文盘点直播技术中的编解码、直播协议、网络传输与简单实现](https://juejin.im/post/5bd32b406fb9a05d3c803f74)
