@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<!-- <html><head></head><body></body></html> -->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="css/video_player.css?v=3" rel="stylesheet" type="text/css" />
+    <link href="css/dialog_box.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript">
+        var __uri = function (str) {
+            return str;
+        }
+    </script>
+
+    <script type="text/javascript" src="js/jquery.js?v=1"></script>
+    <script type="text/javascript" src="js/util-source.js?v=1"></script>
+    <script type="text/javascript" src="js/core-source.js?v=1"></script>
+    <script type="text/javascript">
+        ;(function () {
+            if(location.href.indexOf('url=') != -1) {
+                document.write('<script type="text/javascript" src="js/hls.js?v=12"><'+'/script>');
+            }
+        })();
+    </script>
+
+
+    <script type="text/javascript" src="js/oofUtil.js?v=1"></script>
+    <script type="text/javascript" src="js/video.hls.js?v=1"></script>
+    <script type="text/javascript" src="js/video.subtitle.js?v=1"></script>
+    <script type="text/javascript" src="js/video.setting.js?v=1"></script>
+    <style type="text/css">
+        html,body {height: 100%; overflow: hidden;}
+        .wrap {width: auto!important;height: 100%!important;}
+        .video-container { height: 100%; min-height: auto!important; padding-right: 0;}
+        .player-h5 { height: 100%!important; }
+        .video-player, .video-player, .play-stage {height: 100%!important;}
+        .video-prompt-btn {left: -9999em;top:-9999em;}
+        .btn-video-collect a i {
+            background-image: url(images/icon_collect.png?_=1517967897240&v=1.2);
+            background-image: -webkit-image-set(url(images/icon_collect.png?_=1517967897240&v=1.2) 1x,url(images/icon_collect@2x.png?_=1517967897240&v=1.2) 2x);
+        }
+        .video-fullscreen .btn-video-collect {
+            display: none;
+        }
+        .video-fullscreen .video-close {display: none;}
+
+        #js-canver_video_btn, #js-canver_video_bg {
+            left:-9999em;
+            top:-9999em
+        }
+    </style>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            xhrFields:{withCredentials:true}
+        });
+    </script>
+</head>
+<body>
+<div class="video-title" style="display: none;">
+    <div class="wrap">
+        <div class="vt-headline"><h1>正在播放：<i id="js-video_title"></i></h1></div>
+        <ul class="vt-handle">
+            <li>
+                <a href="//pc.123.com/mobile.html" target="_blank" class="vt-btn"><i class="icon-vt ivt-dw"></i><span>下载客户端</span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="wrap" id="js-wrap">
+    <div class="video-container" id="js-video_container"> <!--playlist-show-->
+        <div class="video-close" style="display: none;" id="js-video_close"><a href="javascript:;"><s>关闭</s></a></div>
+        <div class="video-player">
+            <div class="player-h5" id="js-video_box">
+
+                <div class="btn-video-collect" id="js-video_fav" style="z-index: 101;display: none;"><a href="javascript:;" title="收藏"><i></i><s>收藏</s></a></div>
+
+                <img width="150px" rel="loading_image" src="images/ajax-loader.svg" style="position: absolute;left:50%;top:50%;margin:-110px 0 0 -75px;z-index: 3;" style="display: none;" />
+
+                <div class="play-stage">
+                    <video id="js-video" class="main-video" style="background: #000;"></video>
+                </div>
+                <div class="player-holder" rel="cover" style="z-index: 1;"></div>
+
+                <!--盖层-->
+                <div class="player-holder" rel="cover_bg" style="display: none;z-index: 12;" ></div>
+
+                <!--菜单操作-->
+                <div class="operate-bar" rel="menu">
+                    <a href="javascript:;" class="btn-switch" btn="play"><i class="icon-operate iop-playing"></i><s>播放中</s></a>
+                    <a href="javascript:;" class="btn-switch" style="display: none;"><i class="icon-operate iop-pausing"></i><s>暂停中</s></a>
+                    <div class="bar-progress" rel="progress">
+                        <div class="time-total">
+                            <em class="time-start" rel="end"></em>
+                            <em class="time-finish" rel="start"></em>
+                        </div>
+                        <div class="progress-loaded" style="display: none;" rel="loaded" style="width: 0%;"></div>
+                        <div class="progress-in" rel="loading" style="width: 0%;"></div>
+
+                        <div class="progress-drag" rel="tips" style="display: none;">
+                            <div class="bar-tips"><i class="arrow"></i><b class="arrow"></b><p rel="time_text">10:23</p></div>
+                        </div>
+
+                        <div class="bar-preview" rel="tips_image" style="display: none;">
+                            <!-- <img src=""> -->
+                            <b class="arrow"></b><p rel="time_text">10:23</p>
+                        </div>
+
+                    </div>
+                    <div class="bar-side">
+                        <ul>
+                            <li style="display: none">
+                                <a href="javascript:;" rel="level" class="btn-cle bc-UD"><s>超清</s></a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" class="btn-opt" rel="volume"><i class="icon-operate iop-volume"></i><s>音量</s></a>
+                                <div class="popup-volume" style="display: none;" rel="volume_list">
+                                    <i class="arrow"></i>
+                                    <div class="volume-bar"><span class="volume-in" rel="volume_in" style="height: 0%;"></span><em class="volume-value"  rel="volume_value">0%</em></div>
+                                </div>
+                            </li>
+
+                            <li>
+                                <a href="javascript:;" class="btn-opt" rel="setting"><i class="icon-operate iop-setting"></i><s>设置</s></a>
+                                <div class="popup-setting" style="display: none" rel="setting_list">
+                                    <div class="cell">
+                                        <a href="javascript:;" class="" style="display: ;" id="js-video_filter">视频色彩</a>
+                                    </div>
+                                    <div class="cell">
+                                        <span>比例：</span>
+                                        <a href="javascript:;" btn="scale" scale="0" class="blue">默认</a>
+                                        <a href="javascript:;" btn="scale" scale="1" class="">4:3</a>
+                                        <a href="javascript:;" btn="scale" scale="2" class="">16:9</a>
+                                    </div>
+                                    <div class="cell">
+                                        <span>比例：</span>
+                                        <a href="javascript:;" btn="rotate" rotate="left"><i class="icon-turn turn-left"></i>向左转</a>
+                                        <a href="javascript:;" btn="rotate" rotate="right"><i class="icon-turn turn-right"></i>向右转</a>
+                                    </div>
+                                    <div class="cell">
+                                        <span>底部播放进度条：</span>
+                                        <input class="radio" rel="min_par" checked type="checkbox">
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="javascript:;" rel="fullscreen" class="btn-opt"><i class="icon-operate iop-fullscreen"></i><s>全屏</s></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 播放和重播 -->
+                <div class="video-toast" rel="play_big" style="z-index: 1;display: none">
+                    <!--irp-repeat-->
+                    <i class="icon-repeat-play irp-play">播放</i>
+                </div>
+                <div class="video-toast" rel="play_reoload" style="z-index: 1;display: none">
+                    <!--irp-repeat-->
+                    <i class="icon-repeat-play irp-repeat">重播</i>
+                </div>
+
+
+                <!-- 全屏后的上边条 -->
+                <div class="video-full-screen" style="z-index: 3;display: none;" rel="full_menu">
+                    <div class="vfs-name" rel="title"></div>
+                    <div class="vfs-btn" rel="zoom">
+                        <a href="javascript:;" btn="zoom" zoom="0.5">50%</a>
+                        <a href="javascript:;" btn="zoom" zoom="0.75">75%</a>
+                        <a href="javascript:;" btn="zoom" zoom="1" class="current">100%</a>
+                        <a href="javascript:;" btn="zoom" zoom="full">铺满</a>
+                    </div>
+                    <div class="vfs-tail">
+                        <span rel="date"></span>
+                        <a href="javascript:;" class="btn-close" rel="quit_full">退出全屏</a>
+                    </div>
+                </div>
+
+                <!--清晰度选择-->
+                <div class="video-dialog-box" style="display:none;" rel="level_list">
+                    <div class="head-line"><a href="javascript:;" rel="close" class="btn-close"></a></div>
+                    <div class="video-clarity-select" rel="list">
+                    </div>
+                </div>
+
+                <!--视频滤镜-->
+                <div class="video-dialog-box" rel="filter_list" style="display: none;margin-top: -100px;">
+                    <div class="head-line">
+                        <div class="title">设置</div>
+                        <a href="javascript:;" class="btn-close"></a>
+                    </div>
+                    <div class="video-color-select">
+                        <div class="vcs-tabs">
+                            <a href="javascript:;" class="current">色彩设置</a>
+                        </div>
+                        <div class="vcs-option">
+                            <dl>
+                                <dt>亮度：</dt>
+                                <dd>
+                                    <div class="vcs-range">
+                                        <em><i style="width: 50%;"></i></em>
+                                        <div class="bar-tips" style="left: 50%;"><i class="arrow"></i><b class="arrow"></b><p>50</p></div>
+                                        <input class="range" filter="brightness" value="100" type="range" min="0" max="200">
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>对比度：</dt>
+                                <dd>
+                                    <div class="vcs-range">
+                                        <em><i style="width: 50%;"></i></em>
+                                        <div class="bar-tips" style="display: none; left: 50%;"><i class="arrow"></i><b class="arrow"></b><p>23</p></div>
+                                        <input class="range" filter="contrast" value="100" type="range" min="0" max="200">
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>饱合度：</dt>
+                                <dd>
+                                    <div class="vcs-range">
+                                        <em><i style="width: 50%;"></i></em>
+                                        <div class="bar-tips" style="display: none; left: 50%;"><i class="arrow"></i><b class="arrow"></b><p>23</p></div>
+                                        <input class="range" filter="saturate" value="100" type="range" min="0" max="200">
+                                    </div>
+                                </dd>
+                            </dl>
+                            <div class="vcs-operate">
+                                <a href="javascript:;" rel="filter_default" class="btn">还原</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-error-note" style="display: none" id="js-m3u8_error">
+                    <div class="ven-main">
+                        <p rel="text"></p>
+                        <p rel="code"></p>
+                        <p>
+                            <a href="javascript:;" btn="error_msg">反馈问题</a>
+                            <a href="javascript:;" btn="reload">点击重试</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/video.js?v=1"></script>
+<script type="text/javascript">
+    ;(function () {
+
+        var params = oofUtil.getQueryParams(location.href);
+        if(params['cb']) {
+            var _cbFun = window.parent[params['cb']] || null;
+            if(_cbFun) {
+                _cbFun({
+                    load:function(video,autoplay,playinfo){
+
+                        var $video_box = $('#js-video_box');
+                        $video_box.find('[rel="title"]').add($('#js-video_title')).text( video.title ? '正在播放：'+video.title : '');
+                        var timeC = false;
+                        setInterval(function(){
+                            $video_box.find('[rel="date"]').text( oofUtil.date.format(new Date(), 'HH'+(timeC ? ' ':':')+'mm') );
+                            timeC = timeC ? false : true;
+                        }, 1000);
+                        window.VideoHLS({
+                            type:'mp4',
+                            video_url:video.src,
+                            thumb_url:playinfo.thumbnail_url || '',
+                            duration:video.duration || 0
+                        }, 0);
+
+                        if(autoplay){
+                            try {
+                                $('#js-video')[0].play()
+                            }catch(e){}
+                        }
+                    },
+                    addFullCallback:function(cb){
+                        // $('[rel="fullscreen"]').on('click', function(){
+                        //     cb();
+                        //     return false;
+                        // })
+                    }
+                })
+                if(_cbFun.close) {
+                    $('#js-video_close').show().on('click', function() {
+                        _cbFun.close();
+                        return false;
+                    })
+                }
+            }
+        }
+
+        if(params['url']) {
+            window.VideoHLS({
+                video_url: decodeURIComponent(params['url'] ),
+                duration: 0
+            })
+        }
+        try{
+            if(params['file_name']) {
+                var file_name = decodeURIComponent(params['file_name']);
+                var $video_box = $('#js-video_box');
+                $video_box.find('[rel="title"]').add($('#js-video_title')).text( '正在播放：' + file_name);
+            }
+        }catch(e){}
+
+
+    })();
+</script>
+</body>
+</html>
