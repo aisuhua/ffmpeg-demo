@@ -126,8 +126,8 @@ ffmpeg -analyzeduration 100000000 -i /www/web/ffmpeg-demo/movie/0/example.mp4 -s
 |  4K     | 5       | cpu     | 25   | 3940 | 6000   | 256*声道数 | 与片源文件一样 |
 |  原画   | 100     | 动态    | 动态 | 动态 | 动态   | 动态       | 动态           |
 
-说明：原画是为了转码后的视频播放时清晰度跟原视频一样而设。
-因为有些视频是介入 640-1024、1024-1280 等区间，这些视频如果被转成较低清晰度，那么效果将没有那么好。
+说明：原画是为了转码后的视频播放时清晰度跟原视频更接近而设。
+因为有些视频的宽度在 640-1024、1024-1280 等之间，这些视频如果被转成低清晰度，效果将没有那么好。
 
 #### 3.1 提高视频音量
 
@@ -160,11 +160,24 @@ ffmpeg -analyzeduration 100000000 -i /www/web/ffmpeg-demo/movie/0/mp4/1.mp4 \
  -vsync 1 -vf 'fps=1/2,scale=160:90,tile=6x5' -f image2 -y /www/web/ffmpeg-demo/movie/0/image_group/%d.jpg
 ```
 
+参数说明：
+
+- `fps=1/2` 2 每隔 2 秒截取一张图片；
+- `scale=160:90` 每张小图的长为 160，宽为 90；
+- `tile=6x5` 每张预览图每列放 6 张小图、每行放 5 张小图；
+
+可以参考这个项目 [ffmpeg-generate-video-preview](https://github.com/transitive-bullshit/ffmpeg-generate-video-preview).
+
 ### 6. 生成剧照
 
 ```bash
-ffmpeg -analyzeduration 100000000 -ss 10.2981 -i /www/web/ffmpeg-demo/movie/0/mp4/4.mp4 -map 0:v -t 82.3848 -vf 'fps=fps=1/2.74616' -f image2 -y /www/web/ffmpeg-demo/movie/0/stage_photo/%03d.jpg
+ffmpeg -analyzeduration 100000000 -ss 10 -i /www/web/ffmpeg-demo/movie/0/mp4/4.mp4 -map 0:v -t 82 -vf 'fps=fps=1/2.74616' -f image2 -y /www/web/ffmpeg-demo/movie/0/stage_photo/%03d.jpg
 ```
+
+参数说明：
+
+- `-ss 10` 从第 10 开始截图；
+- `-t 82` 截图的视频时长为 82 秒；
 
 ## 最后
 
