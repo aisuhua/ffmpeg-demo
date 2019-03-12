@@ -4,7 +4,7 @@
  *
  * 如有不理解的地方请看代码注释
  */
-$movie_path = __DIR__.'/movie/1';
+$movie_path = __DIR__.'/movie/0';
 $movie_file = $movie_path . '/example.mp4';
 
 // 创建转码结果输出的目录
@@ -122,18 +122,51 @@ $mp4_files = [];
 
 // 拼接各清晰度对应的转码命令
 foreach ($definitions as $definition) {
-    // 视频宽
-    $width = $widths[$definition];
-    if ($origin_width < $width) {
-        continue;
-    }
-    // 视频高自适应
-    $height = $width / $origin_width * $origin_height;
 
-    // 总码率，音频码率
-    list($bitrate, $audio_bitrate)  = $bitrates[$definition];
-    // 视频码率
-    $video_bitrate = $bitrate - $audio_bitrate;
+    if ($definition == 100) {
+        // 原画特殊处理，只有特殊尺寸的视频才会转原画
+        $width = $origin_width;
+        $height = $origin_height;
+
+        if ($width >= 710 && $width < 1024) {
+            $video_bitrate = $width * 620 / 1024 + 230; // [660, 850)
+            $audio_bitrate = 72;
+        } else if($width >= 1420 && $width < 1920) {
+            $video_bitrate = $width * 4032 / 1920 - 1782; // [1200, 2250)
+            $audio_bitrate = 192;
+        } else if($width >= 2170 && $width < 3840) {
+            $video_bitrate = $width * 7358 / 3840 - 1558; // [2600, 5800)
+            $audio_bitrate = 256;
+        } else {
+            continue;
+        }
+    } else if($definition == 1 && $origin_width < 710) {
+        // 如原视频宽度小于 710，此时的视频只转一个清晰度
+        $width = $origin_width;
+        $height = $origin_height;
+        $video_bitrate = $width * 650 / 710;
+        $audio_bitrate = 72;
+    } else {
+        // 其他清晰度处理
+        $width = $widths[$definition];
+        if ($origin_width < $width) {
+            // 若原视频宽度小于该清晰度对应的宽度则不转
+            continue;
+        }
+        // 视频高自适应
+        $height = intval($width / $origin_width * $origin_height);
+
+        // 总码率，音频码率
+        list($bitrate, $audio_bitrate)  = $bitrates[$definition];
+        // 视频码率
+        $video_bitrate = $bitrate - $audio_bitrate;
+    }
+
+    // 1080P、4K、原画的音频码率 = 固定音频码率 x 声道数
+    if (in_array($definition, [4, 5, 100]) && !empty($audio_stream['channels'])) {
+        $audio_bitrate *= $audio_stream['channels'];
+    }
+
     // 转码后的视频存储位置
     $mp4_file = $movie_path . "/mp4/{$definition}.mp4";
 
@@ -214,7 +247,7 @@ foreach ($definitions as $definition) {
 
 // 开始执行转码
 echo $ffmpeg_cmd, PHP_EOL;
-// system($ffmpeg_cmd);
+system($ffmpeg_cmd);
 
 // ========================第4步：将转码后文件转换成 HLS 格式（即 M3U8 + TS）======================== //
 foreach ($mp4_files as $definition => $mp4_file) {
@@ -224,7 +257,7 @@ foreach ($mp4_files as $definition => $mp4_file) {
     $shell = "ffmpeg -i {$mp4_file} -map 0 -c copy -bsf h264_mp4toannexb -f segment";
     $shell .= " -segment_list {$m3u8_file} -segment_time 10 -y {$ts_file}";
     echo $shell, PHP_EOL;
-    // system($shell);
+    system($shell);
 }
 
 // ========================第5步：生成缩略图、预览图======================= //
@@ -249,7 +282,7 @@ $shell = "ffmpeg -analyzeduration 100000000 -i {$mp4_file} -vsync 0 -ss {$thumb_
 $shell .= " -vsync 1 -vf 'fps=1/{$oi_interval},scale={$oi_width}:{$oi_height},tile={$cols}x{$rows}' -f image2 -y {$oi_file}";
 
 echo $shell, PHP_EOL;
-// system($shell);
+system($shell);
 
 // ========================第5步：生成剧照======================= //
 // 使用最高清晰度的视频生成剧照

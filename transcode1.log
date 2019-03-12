@@ -1,0 +1,326 @@
+ffprobe -v quiet -print_format json -show_streams -show_format /www/web/ffmpeg-demo/movie/1/example.mp4
+ffmpeg -i /www/web/ffmpeg-demo/movie/1/example.mp4 -map 0:a -q:a 0 -af volumedetect -f null null 2>&1
+ffmpeg -analyzeduration 100000000 -i /www/web/ffmpeg-demo/movie/1/example.mp4 -sn -dn \
+ -t 10.038933 -map 0:1 -vsync 1 -c:v libx264 -b:v 552k -r 15 -s 640x362 -aspect 640:362 -map 0:0 -c:a aac -strict -2 -b:a 48k -ar 44100 -ac 1 -af volume=31.6dB -qdiff 4 -qcomp 0.6 -subq 9 -preset slower -me_range 32 -coder ac -me_method umh -pix_fmt yuv420p -keyint_min 15 -refs 4 -bf 4 -movflags +faststart -y /www/web/ffmpeg-demo/movie/1/mp4/1.mp4 \
+ -t 10.038933 -map 0:1 -vsync 1 -c:v libx264 -b:v 811.25k -r 25 -s 960x544 -aspect 960:544 -map 0:0 -c:a aac -strict -2 -b:a 72k -ar 44100 -af volume=31.6dB -qdiff 4 -qcomp 0.6 -subq 9 -preset slower -me_range 32 -coder ac -me_method umh -pix_fmt yuv420p -keyint_min 25 -refs 3 -bf 2 -movflags +faststart -y /www/web/ffmpeg-demo/movie/1/mp4/100.mp4
+ffmpeg version 2.8.15-0ubuntu0.16.04.1 Copyright (c) 2000-2018 the FFmpeg developers
+  built with gcc 5.4.0 (Ubuntu 5.4.0-6ubuntu1~16.04.10) 20160609
+  configuration: --prefix=/usr --extra-version=0ubuntu0.16.04.1 --build-suffix=-ffmpeg --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --cc=cc --cxx=g++ --enable-gpl --enable-shared --disable-stripping --disable-decoder=libopenjpeg --disable-decoder=libschroedinger --enable-avresample --enable-avisynth --enable-gnutls --enable-ladspa --enable-libass --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libgme --enable-libgsm --enable-libmodplug --enable-libmp3lame --enable-libopenjpeg --enable-libopus --enable-libpulse --enable-librtmp --enable-libschroedinger --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libssh --enable-libtheora --enable-libtwolame --enable-libvorbis --enable-libvpx --enable-libwavpack --enable-libwebp --enable-libx265 --enable-libxvid --enable-libzvbi --enable-openal --enable-opengl --enable-x11grab --enable-libdc1394 --enable-libiec61883 --enable-libzmq --enable-frei0r --enable-libx264 --enable-libopencv
+  libavutil      54. 31.100 / 54. 31.100
+  libavcodec     56. 60.100 / 56. 60.100
+  libavformat    56. 40.101 / 56. 40.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 40.101 /  5. 40.101
+  libavresample   2.  1.  0 /  2.  1.  0
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  2.101 /  1.  2.101
+  libpostproc    53.  3.100 / 53.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/www/web/ffmpeg-demo/movie/1/example.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp42isom
+    creation_time   : 2018-02-17 04:03:22
+  Duration: 00:00:10.04, start: 0.000000, bitrate: 1449 kb/s
+    Stream #0:0(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, mono, fltp, 64 kb/s (default)
+    Metadata:
+      creation_time   : 2018-02-17 04:03:22
+    Stream #0:1(und): Video: h264 (Baseline) (avc1 / 0x31637661), yuv420p, 960x544, 1381 kb/s, 25.60 fps, 25.58 tbr, 90k tbn, 180k tbc (default)
+    Metadata:
+      creation_time   : 2018-02-17 04:03:22
+      encoder         : JVT/AVC Coding
+[libx264 @ 0x1a33bc0] using SAR=1/1
+[libx264 @ 0x1a33bc0] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 AVX2 LZCNT BMI2
+[libx264 @ 0x1a33bc0] profile High, level 2.2
+[libx264 @ 0x1a33bc0] 264 - core 148 r2643 5c65704 - H.264/MPEG-4 AVC codec - Copyleft 2003-2015 - http://www.videolan.org/x264.html - options: cabac=1 ref=4 deblock=1:0:0 analyse=0x3:0x133 me=umh subme=9 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=32 chroma_me=1 trellis=2 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=6 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=4 b_pyramid=2 b_adapt=2 b_bias=0 direct=3 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=15 scenecut=40 intra_refresh=0 rc_lookahead=60 rc=abr mbtree=1 bitrate=552 ratetol=1.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+[libx264 @ 0x1a61260] using SAR=1/1
+[libx264 @ 0x1a61260] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 AVX2 LZCNT BMI2
+[libx264 @ 0x1a61260] profile High, level 3.1
+[libx264 @ 0x1a61260] 264 - core 148 r2643 5c65704 - H.264/MPEG-4 AVC codec - Copyleft 2003-2015 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x133 me=umh subme=9 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=32 chroma_me=1 trellis=2 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=6 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=2 b_pyramid=2 b_adapt=2 b_bias=0 direct=3 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=60 rc=abr mbtree=1 bitrate=811 ratetol=1.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/www/web/ffmpeg-demo/movie/1/mp4/1.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp42isom
+    encoder         : Lavf56.40.101
+    Stream #0:0(und): Video: h264 (libx264) ([33][0][0][0] / 0x0021), yuv420p, 640x362 [SAR 40001:40000 DAR 221:125], q=-1--1, 552 kb/s, 15 fps, 15360 tbn, 15 tbc (default)
+    Metadata:
+      creation_time   : 2018-02-17 04:03:22
+      encoder         : Lavc56.60.100 libx264
+    Stream #0:1(und): Audio: aac ([64][0][0][0] / 0x0040), 44100 Hz, mono, fltp, 48 kb/s (default)
+    Metadata:
+      creation_time   : 2018-02-17 04:03:22
+      encoder         : Lavc56.60.100 aac
+Output #1, mp4, to '/www/web/ffmpeg-demo/movie/1/mp4/100.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp42isom
+    encoder         : Lavf56.40.101
+    Stream #1:0(und): Video: h264 (libx264) ([33][0][0][0] / 0x0021), yuv420p, 960x544 [SAR 1:1 DAR 30:17], q=-1--1, 811 kb/s, 25 fps, 12800 tbn, 25 tbc (default)
+    Metadata:
+      creation_time   : 2018-02-17 04:03:22
+      encoder         : Lavc56.60.100 libx264
+    Stream #1:1(und): Audio: aac ([64][0][0][0] / 0x0040), 44100 Hz, mono, fltp, 72 kb/s (default)
+    Metadata:
+      creation_time   : 2018-02-17 04:03:22
+      encoder         : Lavc56.60.100 aac
+Stream mapping:
+  Stream #0:1 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:0 -> #0:1 (aac (native) -> aac (native))
+  Stream #0:1 -> #1:0 (h264 (native) -> h264 (libx264))
+  Stream #0:0 -> #1:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+Past duration 0.828163 too large
+Past duration 0.609718 too large
+Past duration 0.633324 too large
+Past duration 0.656654 too large
+Past duration 0.680275 too large
+Past duration 0.703606 too large
+Past duration 0.726936 too large
+Past duration 0.750542 too large
+Past duration 0.773888 too large
+Past duration 0.797493 too large
+Past duration 0.820824 too large
+Past duration 0.844444 too large
+Past duration 0.867775 too large
+Past duration 0.891106 too large
+Past duration 0.914711 too large
+Past duration 0.938042 too large
+Past duration 0.961662 too large
+Past duration 0.984993 too large
+frame=   41 fps=0.0 q=0.0 q=0.0 size=       0kB time=00:00:03.69 bitrate=   0.1kbits/s dup=0 drop=25    frame=   60 fps= 59 q=0.0 q=35.0 size=       0kB time=00:00:04.96 bitrate=   0.1kbits/s dup=0 drop=40    frame=   69 fps= 45 q=0.0 q=35.0 size=       0kB time=00:00:05.59 bitrate=   0.1kbits/s dup=0 drop=46    frame=   81 fps= 40 q=33.0 q=34.0 size=     115kB time=00:00:06.38 bitrate= 148.1kbits/s dup=0 drop=55    frame=   93 fps= 37 q=33.0 q=34.0 size=     136kB time=00:00:07.19 bitrate= 154.4kbits/s dup=0 drop=64    frame=  102 fps= 33 q=31.0 q=34.0 size=     172kB time=00:00:07.77 bitrate= 180.7kbits/s dup=0 drop=70    frame=  112 fps= 31 q=30.0 q=33.0 size=     212kB time=00:00:08.45 bitrate= 205.4kbits/s dup=0 drop=78    frame=  120 fps= 29 q=29.0 q=34.0 size=     237kB time=00:00:08.98 bitrate= 216.2kbits/s dup=0 drop=84    frame=  133 fps= 29 q=29.0 q=34.0 size=     296kB time=00:00:09.14 bitrate= 264.8kbits/s dup=0 drop=94    frame=  144 fps= 28 q=29.0 q=34.0 size=     348kB time=00:00:09.79 bitrate= 290.7kbits/s dup=0 drop=102    [mp4 @ 0x1a2a9c0] Starting second pass: moving the moov atom to the beginning of the file
+[mp4 @ 0x1a60360] Starting second pass: moving the moov atom to the beginning of the file
+frame=  151 fps= 20 q=-1.0 Lq=-1.0 size=     709kB time=00:00:09.96 bitrate= 583.1kbits/s dup=0 drop=108    
+video:1621kB audio:149kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+[libx264 @ 0x1a33bc0] frame I:1     Avg QP:21.68  size: 55619
+[libx264 @ 0x1a33bc0] frame P:35    Avg QP:25.58  size: 12612
+[libx264 @ 0x1a33bc0] frame B:115   Avg QP:32.16  size:  1400
+[libx264 @ 0x1a33bc0] consecutive B-frames:  1.3%  2.6%  9.9% 13.2% 72.8%
+[libx264 @ 0x1a33bc0] mb I  I16..4:  6.7% 35.8% 57.5%
+[libx264 @ 0x1a33bc0] mb P  I16..4:  1.6%  2.6%  1.1%  P16..4: 41.9% 20.0% 20.7%  2.0%  0.8%    skip: 9.3%
+[libx264 @ 0x1a33bc0] mb B  I16..4:  0.0%  0.1%  0.0%  B16..8: 43.1%  6.5%  2.1%  direct: 1.9%  skip:46.3%  L0:40.7% L1:50.9% BI: 8.4%
+[libx264 @ 0x1a33bc0] final ratefactor: 25.01
+[libx264 @ 0x1a33bc0] 8x8 transform intra:46.0% inter:51.9%
+[libx264 @ 0x1a33bc0] direct mvs  spatial:96.5% temporal:3.5%
+[libx264 @ 0x1a33bc0] coded y,uvDC,uvAC intra: 60.0% 63.4% 39.0% inter: 17.2% 11.1% 1.0%
+[libx264 @ 0x1a33bc0] i16 v,h,dc,p: 39% 25% 22% 14%
+[libx264 @ 0x1a33bc0] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 19% 16% 30%  4%  4%  4%  7%  5% 10%
+[libx264 @ 0x1a33bc0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 19% 16%  6%  7%  9%  9% 12%  8% 15%
+[libx264 @ 0x1a33bc0] i8c dc,h,v,p: 38% 34% 19%  9%
+[libx264 @ 0x1a33bc0] Weighted P-Frames: Y:22.9% UV:11.4%
+[libx264 @ 0x1a33bc0] ref P L0: 67.1% 12.5% 11.9%  5.8%  2.6%  0.0%
+[libx264 @ 0x1a33bc0] ref B L0: 91.4%  6.7%  1.9%
+[libx264 @ 0x1a33bc0] ref B L1: 81.2% 18.8%
+[libx264 @ 0x1a33bc0] kb/s:522.96
+[libx264 @ 0x1a61260] frame I:2     Avg QP:29.52  size: 46325
+[libx264 @ 0x1a61260] frame P:86    Avg QP:30.01  size:  8447
+[libx264 @ 0x1a61260] frame B:163   Avg QP:37.06  size:  1115
+[libx264 @ 0x1a61260] consecutive B-frames:  1.2%  5.6% 93.2%
+[libx264 @ 0x1a61260] mb I  I16..4: 13.4% 42.1% 44.5%
+[libx264 @ 0x1a61260] mb P  I16..4:  1.4%  1.5%  0.5%  P16..4: 43.6% 10.4% 10.1%  0.2%  0.1%    skip:32.4%
+[libx264 @ 0x1a61260] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8: 40.2%  1.7%  0.2%  direct: 0.3%  skip:57.6%  L0:47.9% L1:50.8% BI: 1.3%
+[libx264 @ 0x1a61260] final ratefactor: 28.48
+[libx264 @ 0x1a61260] 8x8 transform intra:43.5% inter:47.7%
+[libx264 @ 0x1a61260] direct mvs  spatial:97.5% temporal:2.5%
+[libx264 @ 0x1a61260] coded y,uvDC,uvAC intra: 49.0% 42.3% 10.5% inter: 8.1% 5.6% 0.1%
+[libx264 @ 0x1a61260] i16 v,h,dc,p: 43% 33% 11% 13%
+[libx264 @ 0x1a61260] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 13% 16% 30%  4%  6%  5%  9%  5% 11%
+[libx264 @ 0x1a61260] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 16% 22%  8%  6%  8%  7% 12%  7% 14%
+[libx264 @ 0x1a61260] i8c dc,h,v,p: 47% 31% 16%  5%
+[libx264 @ 0x1a61260] Weighted P-Frames: Y:11.6% UV:3.5%
+[libx264 @ 0x1a61260] ref P L0: 68.6% 10.9% 17.0%  2.9%  0.6%
+[libx264 @ 0x1a61260] ref B L0: 92.2%  7.4%  0.4%
+[libx264 @ 0x1a61260] ref B L1: 91.3%  8.7%
+[libx264 @ 0x1a61260] kb/s:797.44
+ffmpeg -i /www/web/ffmpeg-demo/movie/1/mp4/1.mp4 -map 0 -c copy -bsf h264_mp4toannexb -f segment -segment_list /www/web/ffmpeg-demo/movie/1/hls/1.m3u8 -segment_time 10 -y /www/web/ffmpeg-demo/movie/1/hls/1_%05d.ts
+ffmpeg version 2.8.15-0ubuntu0.16.04.1 Copyright (c) 2000-2018 the FFmpeg developers
+  built with gcc 5.4.0 (Ubuntu 5.4.0-6ubuntu1~16.04.10) 20160609
+  configuration: --prefix=/usr --extra-version=0ubuntu0.16.04.1 --build-suffix=-ffmpeg --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --cc=cc --cxx=g++ --enable-gpl --enable-shared --disable-stripping --disable-decoder=libopenjpeg --disable-decoder=libschroedinger --enable-avresample --enable-avisynth --enable-gnutls --enable-ladspa --enable-libass --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libgme --enable-libgsm --enable-libmodplug --enable-libmp3lame --enable-libopenjpeg --enable-libopus --enable-libpulse --enable-librtmp --enable-libschroedinger --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libssh --enable-libtheora --enable-libtwolame --enable-libvorbis --enable-libvpx --enable-libwavpack --enable-libwebp --enable-libx265 --enable-libxvid --enable-libzvbi --enable-openal --enable-opengl --enable-x11grab --enable-libdc1394 --enable-libiec61883 --enable-libzmq --enable-frei0r --enable-libx264 --enable-libopencv
+  libavutil      54. 31.100 / 54. 31.100
+  libavcodec     56. 60.100 / 56. 60.100
+  libavformat    56. 40.101 / 56. 40.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 40.101 /  5. 40.101
+  libavresample   2.  1.  0 /  2.  1.  0
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  2.101 /  1.  2.101
+  libpostproc    53.  3.100 / 53.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/www/web/ffmpeg-demo/movie/1/mp4/1.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf56.40.101
+  Duration: 00:00:10.07, start: 0.023220, bitrate: 576 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 640x362 [SAR 1:1 DAR 320:181], 523 kb/s, SAR 32767:32766 DAR 874028:494357, 15 fps, 15 tbr, 15360 tbn, 30 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, mono, fltp, 49 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+[segment @ 0x16cd5a0] Codec for stream 0 does not use global headers but container format requires global headers
+[segment @ 0x16cd5a0] Codec for stream 1 does not use global headers but container format requires global headers
+Output #0, segment, to '/www/web/ffmpeg-demo/movie/1/hls/1_%05d.ts':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf56.40.101
+    Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p, 640x362 [SAR 32767:32766 DAR 874028:494357], q=2-31, 523 kb/s, 15 fps, 15 tbr, 90k tbn, 15 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(und): Audio: aac (mp4a / 0x6134706D), 44100 Hz, mono, 49 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+  Stream #0:1 -> #0:1 (copy)
+Press [q] to stop, [?] for help
+frame=  151 fps=0.0 q=-1.0 Lsize=N/A time=00:00:09.95 bitrate=N/A    
+video:643kB audio:59kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+ffmpeg -i /www/web/ffmpeg-demo/movie/1/mp4/100.mp4 -map 0 -c copy -bsf h264_mp4toannexb -f segment -segment_list /www/web/ffmpeg-demo/movie/1/hls/100.m3u8 -segment_time 10 -y /www/web/ffmpeg-demo/movie/1/hls/100_%05d.ts
+ffmpeg version 2.8.15-0ubuntu0.16.04.1 Copyright (c) 2000-2018 the FFmpeg developers
+  built with gcc 5.4.0 (Ubuntu 5.4.0-6ubuntu1~16.04.10) 20160609
+  configuration: --prefix=/usr --extra-version=0ubuntu0.16.04.1 --build-suffix=-ffmpeg --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --cc=cc --cxx=g++ --enable-gpl --enable-shared --disable-stripping --disable-decoder=libopenjpeg --disable-decoder=libschroedinger --enable-avresample --enable-avisynth --enable-gnutls --enable-ladspa --enable-libass --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libgme --enable-libgsm --enable-libmodplug --enable-libmp3lame --enable-libopenjpeg --enable-libopus --enable-libpulse --enable-librtmp --enable-libschroedinger --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libssh --enable-libtheora --enable-libtwolame --enable-libvorbis --enable-libvpx --enable-libwavpack --enable-libwebp --enable-libx265 --enable-libxvid --enable-libzvbi --enable-openal --enable-opengl --enable-x11grab --enable-libdc1394 --enable-libiec61883 --enable-libzmq --enable-frei0r --enable-libx264 --enable-libopencv
+  libavutil      54. 31.100 / 54. 31.100
+  libavcodec     56. 60.100 / 56. 60.100
+  libavformat    56. 40.101 / 56. 40.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 40.101 /  5. 40.101
+  libavresample   2.  1.  0 /  2.  1.  0
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  2.101 /  1.  2.101
+  libpostproc    53.  3.100 / 53.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/www/web/ffmpeg-demo/movie/1/mp4/100.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf56.40.101
+  Duration: 00:00:10.04, start: 0.023220, bitrate: 878 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 960x544 [SAR 1:1 DAR 30:17], 798 kb/s, 25 fps, 25 tbr, 12800 tbn, 50 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, mono, fltp, 74 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+[segment @ 0x1cb3500] Codec for stream 0 does not use global headers but container format requires global headers
+[segment @ 0x1cb3500] Codec for stream 1 does not use global headers but container format requires global headers
+Output #0, segment, to '/www/web/ffmpeg-demo/movie/1/hls/100_%05d.ts':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf56.40.101
+    Stream #0:0(und): Video: h264 (avc1 / 0x31637661), yuv420p, 960x544 [SAR 1:1 DAR 30:17], q=2-31, 798 kb/s, 25 fps, 25 tbr, 90k tbn, 25 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(und): Audio: aac (mp4a / 0x6134706D), 44100 Hz, mono, 74 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+  Stream #0:1 -> #0:1 (copy)
+Press [q] to stop, [?] for help
+frame=  251 fps=0.0 q=-1.0 Lsize=N/A time=00:00:09.98 bitrate=N/A    
+video:978kB audio:89kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+ffmpeg -analyzeduration 100000000 -i /www/web/ffmpeg-demo/movie/1/mp4/1.mp4 -vsync 0 -ss 5.0194665 -frames:v 1 -s 220x124 -f image2 -y /www/web/ffmpeg-demo/movie/1/thumb.jpg -vsync 1 -vf 'fps=1/2,scale=160:90,tile=6x5' -f image2 -y /www/web/ffmpeg-demo/movie/1/image_group/%d.jpg
+ffmpeg version 2.8.15-0ubuntu0.16.04.1 Copyright (c) 2000-2018 the FFmpeg developers
+  built with gcc 5.4.0 (Ubuntu 5.4.0-6ubuntu1~16.04.10) 20160609
+  configuration: --prefix=/usr --extra-version=0ubuntu0.16.04.1 --build-suffix=-ffmpeg --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --cc=cc --cxx=g++ --enable-gpl --enable-shared --disable-stripping --disable-decoder=libopenjpeg --disable-decoder=libschroedinger --enable-avresample --enable-avisynth --enable-gnutls --enable-ladspa --enable-libass --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libgme --enable-libgsm --enable-libmodplug --enable-libmp3lame --enable-libopenjpeg --enable-libopus --enable-libpulse --enable-librtmp --enable-libschroedinger --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libssh --enable-libtheora --enable-libtwolame --enable-libvorbis --enable-libvpx --enable-libwavpack --enable-libwebp --enable-libx265 --enable-libxvid --enable-libzvbi --enable-openal --enable-opengl --enable-x11grab --enable-libdc1394 --enable-libiec61883 --enable-libzmq --enable-frei0r --enable-libx264 --enable-libopencv
+  libavutil      54. 31.100 / 54. 31.100
+  libavcodec     56. 60.100 / 56. 60.100
+  libavformat    56. 40.101 / 56. 40.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 40.101 /  5. 40.101
+  libavresample   2.  1.  0 /  2.  1.  0
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  2.101 /  1.  2.101
+  libpostproc    53.  3.100 / 53.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/www/web/ffmpeg-demo/movie/1/mp4/1.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf56.40.101
+  Duration: 00:00:10.07, start: 0.023220, bitrate: 576 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 640x362 [SAR 1:1 DAR 320:181], 523 kb/s, SAR 32767:32766 DAR 874028:494357, 15 fps, 15 tbr, 15360 tbn, 30 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, mono, fltp, 49 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+[swscaler @ 0x25b14e0] deprecated pixel format used, make sure you did set range correctly
+[swscaler @ 0x26116e0] deprecated pixel format used, make sure you did set range correctly
+[mjpeg @ 0x2596fa0] bitrate tolerance 4000000 too small for bitrate 200000, overriding
+Output #0, image2, to '/www/web/ffmpeg-demo/movie/1/thumb.jpg':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf56.40.101
+    Stream #0:0(und): Video: mjpeg, yuvj420p(pc), 220x124 [SAR 32504864:32618553 DAR 874028:494357], q=2-31, 200 kb/s, 15 fps, 15 tbn, 15 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc56.60.100 mjpeg
+Output #1, image2, to '/www/web/ffmpeg-demo/movie/1/image_group/%d.jpg':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf56.40.101
+    Stream #1:0(und): Video: mjpeg, yuvj420p(pc), 960x450 [SAR 983010:988441 DAR 393385:185418], q=2-31, 200 kb/s, 0.02 fps, 0.02 tbn, 0.02 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc56.60.100 mjpeg
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))
+  Stream #0:0 -> #1:0 (h264 (native) -> mjpeg (native))
+Press [q] to stop, [?] for help
+[mjpeg @ 0x2595580] Cannot store exact aspect ratio 32504864:32618553
+[mjpeg @ 0x2596fa0] Cannot store exact aspect ratio 983010:988441
+frame=    1 fps=0.0 q=3.8 Lq=5.4 size=N/A time=00:01:00.00 bitrate=N/A    
+video:37kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+ffmpeg -analyzeduration 100000000 -ss 1.0038933 -i /www/web/ffmpeg-demo/movie/1/mp4/100.mp4 -map 0:v -t 8.0311464 -vf 'fps=fps=1/0.26770488' -f image2 -y /www/web/ffmpeg-demo/movie/1/stage_photo/%03d.jpg
+ffmpeg version 2.8.15-0ubuntu0.16.04.1 Copyright (c) 2000-2018 the FFmpeg developers
+  built with gcc 5.4.0 (Ubuntu 5.4.0-6ubuntu1~16.04.10) 20160609
+  configuration: --prefix=/usr --extra-version=0ubuntu0.16.04.1 --build-suffix=-ffmpeg --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --cc=cc --cxx=g++ --enable-gpl --enable-shared --disable-stripping --disable-decoder=libopenjpeg --disable-decoder=libschroedinger --enable-avresample --enable-avisynth --enable-gnutls --enable-ladspa --enable-libass --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libgme --enable-libgsm --enable-libmodplug --enable-libmp3lame --enable-libopenjpeg --enable-libopus --enable-libpulse --enable-librtmp --enable-libschroedinger --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libssh --enable-libtheora --enable-libtwolame --enable-libvorbis --enable-libvpx --enable-libwavpack --enable-libwebp --enable-libx265 --enable-libxvid --enable-libzvbi --enable-openal --enable-opengl --enable-x11grab --enable-libdc1394 --enable-libiec61883 --enable-libzmq --enable-frei0r --enable-libx264 --enable-libopencv
+  libavutil      54. 31.100 / 54. 31.100
+  libavcodec     56. 60.100 / 56. 60.100
+  libavformat    56. 40.101 / 56. 40.101
+  libavdevice    56.  4.100 / 56.  4.100
+  libavfilter     5. 40.101 /  5. 40.101
+  libavresample   2.  1.  0 /  2.  1.  0
+  libswscale      3.  1.101 /  3.  1.101
+  libswresample   1.  2.101 /  1.  2.101
+  libpostproc    53.  3.100 / 53.  3.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/www/web/ffmpeg-demo/movie/1/mp4/100.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf56.40.101
+  Duration: 00:00:10.04, start: 0.023220, bitrate: 878 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 960x544 [SAR 1:1 DAR 30:17], 798 kb/s, 25 fps, 25 tbr, 12800 tbn, 50 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, mono, fltp, 74 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+[swscaler @ 0x1986920] deprecated pixel format used, make sure you did set range correctly
+Output #0, image2, to '/www/web/ffmpeg-demo/movie/1/stage_photo/%03d.jpg':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf56.40.101
+    Stream #0:0(und): Video: mjpeg, yuvj420p(pc), 960x544 [SAR 1:1 DAR 30:17], q=2-31, 200 kb/s, 3.74 fps, 3.74 tbn, 3.74 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc56.60.100 mjpeg
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))
+Press [q] to stop, [?] for help
+frame=   30 fps=0.0 q=24.8 Lsize=N/A time=00:00:08.03 bitrate=N/A    
+video:1182kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
