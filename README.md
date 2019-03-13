@@ -190,4 +190,8 @@ ffmpeg -analyzeduration 100000000 -ss 10 -i /www/web/ffmpeg-demo/movie/0/mp4/4.m
 ## 参考文献
 
 - [FFmpeg 官网](https://ffmpeg.org/index.html)
+- [HLS+CDN巧妙的串流技術組合](https://www.ithome.com.tw/voice/95294)
+- [音视频编码格式和封装格式的关系和区别是什么？](https://www.zhihu.com/question/22854380)
+- [[总结]视音频编解码技术零基础学习方法](https://blog.csdn.net/leixiaohua1020/article/details/18893769)
 - [一文盘点直播技术中的编解码、直播协议、网络传输与简单实现](https://juejin.im/post/5bd32b406fb9a05d3c803f74)
+- [HLS 如何实现加密 ？](https://www.zhihu.com/question/20697986)
