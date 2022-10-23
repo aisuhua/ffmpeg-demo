@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /**
  * 视频转码
@@ -6,6 +7,10 @@
  */
 $movie_path = __DIR__.'/movie/0';
 $movie_file = $movie_path . '/example.mp4';
+
+if (!file_exists($movie_file)) {
+    die("文件不存在：".$movie_file);
+}
 
 // 创建转码结果输出的目录
 $dirs = ['hls', 'image_group', 'mp4', 'stage_photo', 'subtitle'];
@@ -16,7 +21,7 @@ foreach ($dirs as $dir) {
 }
 
 // ========================第1步：获取视频基本信息======================== //
-$shell = "ffprobe -v quiet -print_format json -show_streams -show_format {$movie_file}";
+$shell = "ffprobe -v quiet -print_format json -show_streams -show_format '{$movie_file}'";
 echo $shell, PHP_EOL;
 
 $output = shell_exec($shell);
@@ -48,7 +53,7 @@ $audio_stream = $audio_streams[0];
 // 第2步：提取视频字幕
 foreach ($subtitle_streams as $subtitle_stream) {
     $subtitle_file = $movie_path . "/subtitle/{$subtitle_stream['index']}.srt";
-    $shell = "ffmpeg -v quiet -analyzeduration 100000000 -i {$movie_file} -map 0:{$subtitle_stream['index']} -y {$subtitle_file}";
+    $shell = "ffmpeg -v quiet -analyzeduration 100000000 -i '{$movie_file}' -map 0:{$subtitle_stream['index']} -y {$subtitle_file}";
     echo $shell, PHP_EOL;
     system($shell);
 }
@@ -91,12 +96,12 @@ $widths = [
 ];
 
 // 拼接转码命令
-$ffmpeg_cmd = "ffmpeg -analyzeduration 100000000 -i {$movie_file} -sn -dn";
+$ffmpeg_cmd = "ffmpeg -analyzeduration 100000000 -i '{$movie_file}' -sn -dn";
 
 // 提高视频音量
 $increase_volume = '';
 // 获取片源的音频信息
-$shell = "ffmpeg -i {$movie_file} -map 0:a -q:a 0 -af volumedetect -f null null 2>&1";
+$shell = "ffmpeg -i '{$movie_file}' -map 0:a -q:a 0 -af volumedetect -f null null 2>&1";
 echo $shell, PHP_EOL;
 $output = shell_exec($shell);
 if ($output) {
@@ -237,7 +242,7 @@ foreach ($definitions as $definition) {
     }
 
     $cmd .= $video_cmd . $audio_cmd . $other_cmd;
-    $cmd .= " -y {$mp4_file}";
+    $cmd .= " -y '{$mp4_file}'";
 
     $ffmpeg_cmd .= " \\\n";
     $ffmpeg_cmd .= $cmd;
@@ -254,8 +259,8 @@ foreach ($mp4_files as $definition => $mp4_file) {
     $m3u8_file = $movie_path . "/hls/{$definition}.m3u8";
     $ts_file = $movie_path . "/hls/{$definition}_%05d.ts";
 
-    $shell = "ffmpeg -i {$mp4_file} -map 0 -c copy -bsf h264_mp4toannexb -f segment";
-    $shell .= " -segment_list {$m3u8_file} -segment_time 10 -y {$ts_file}";
+    $shell = "ffmpeg -i '{$mp4_file}' -map 0 -c copy -bsf h264_mp4toannexb -f segment";
+    $shell .= " -segment_list '{$m3u8_file}' -segment_time 10 -y {$ts_file}";
     echo $shell, PHP_EOL;
     system($shell);
 }
