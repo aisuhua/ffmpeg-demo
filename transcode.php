@@ -21,8 +21,10 @@ foreach ($dirs as $dir) {
 }
 
 // ========================第1步：获取视频基本信息======================== //
+echo PHP_EOL;
 $shell = "ffprobe -v quiet -print_format json -show_streams -show_format '{$movie_file}'";
 echo $shell, PHP_EOL;
+echo PHP_EOL;
 
 $output = shell_exec($shell);
 $ffprobe_info = json_decode($output, true);
@@ -53,8 +55,12 @@ $audio_stream = $audio_streams[0];
 // 第2步：提取视频字幕
 foreach ($subtitle_streams as $subtitle_stream) {
     $subtitle_file = $movie_path . "/subtitle/{$subtitle_stream['index']}.srt";
+
+    echo PHP_EOL;
     $shell = "ffmpeg -v quiet -analyzeduration 100000000 -i '{$movie_file}' -map 0:{$subtitle_stream['index']} -y {$subtitle_file}";
     echo $shell, PHP_EOL;
+    echo PHP_EOL;
+
     system($shell);
 }
 
@@ -97,12 +103,15 @@ $widths = [
 
 // 拼接转码命令
 $ffmpeg_cmd = "ffmpeg -analyzeduration 100000000 -i '{$movie_file}' -sn -dn";
-
 // 提高视频音量
 $increase_volume = '';
 // 获取片源的音频信息
+
+echo PHP_EOL;
 $shell = "ffmpeg -i '{$movie_file}' -map 0:a -q:a 0 -af volumedetect -f null null 2>&1";
 echo $shell, PHP_EOL;
+echo PHP_EOL;
+
 $output = shell_exec($shell);
 if ($output) {
     $volume_info = [];
@@ -251,7 +260,10 @@ foreach ($definitions as $definition) {
 }
 
 // 开始执行转码
+echo PHP_EOL;
 echo $ffmpeg_cmd, PHP_EOL;
+echo PHP_EOL;
+
 system($ffmpeg_cmd);
 
 // ========================第4步：将转码后文件转换成 HLS 格式（即 M3U8 + TS）======================== //
@@ -261,7 +273,11 @@ foreach ($mp4_files as $definition => $mp4_file) {
 
     $shell = "ffmpeg -i '{$mp4_file}' -map 0 -c copy -bsf h264_mp4toannexb -f segment";
     $shell .= " -segment_list '{$m3u8_file}' -segment_time 10 -y {$ts_file}";
+    
+    echo PHP_EOL;
     echo $shell, PHP_EOL;
+    echo PHP_EOL;
+
     system($shell);
 }
 
@@ -286,7 +302,10 @@ $oi_file = $movie_path . "/image_group/%d.jpg";
 $shell = "ffmpeg -analyzeduration 100000000 -i {$mp4_file} -vsync 0 -ss {$thumb_start} -frames:v 1 -s {$thumb_width}x{$thumb_height} -f image2 -y {$thumb_file}";
 $shell .= " -vsync 1 -vf 'fps=1/{$oi_interval},scale={$oi_width}:{$oi_height},tile={$cols}x{$rows}' -f image2 -y {$oi_file}";
 
+echo PHP_EOL;
 echo $shell, PHP_EOL;
+echo PHP_EOL;
+
 system($shell);
 
 // ========================第5步：生成剧照======================= //
@@ -303,5 +322,8 @@ $sp_file = $movie_path . '/stage_photo/%03d.jpg';
 
 $shell = "ffmpeg -analyzeduration 100000000 -ss {$sp_from} -i {$mp4_file} -map 0:v -t {$sp_long} -vf 'fps=fps=1/{$sp_interval}' -f image2 -y {$sp_file}";
 
+echo PHP_EOL;
 echo $shell, PHP_EOL;
+echo PHP_EOL;
+
 system($shell);
