@@ -112,7 +112,7 @@ $shell = "ffmpeg -i '{$movie_file}' -map 0:a -q:a 0 -af volumedetect -f null nul
 echo $shell, PHP_EOL;
 echo PHP_EOL;
 
-$output = shell_exec($shell);
+// $output = shell_exec($shell);
 if ($output) {
     $volume_info = [];
 
@@ -272,7 +272,7 @@ foreach ($mp4_files as $definition => $mp4_file) {
     $ts_file = $movie_path . "/hls/{$definition}_%05d.ts";
 
     $shell = "ffmpeg -i '{$mp4_file}' -map 0 -c copy -bsf h264_mp4toannexb -f segment";
-    $shell .= " -segment_list '{$m3u8_file}' -segment_time 10 -y {$ts_file}";
+    $shell .= " -segment_list '{$m3u8_file}' -segment_time 10 -y '{$ts_file}'";
     
     echo PHP_EOL;
     echo $shell, PHP_EOL;
@@ -299,8 +299,8 @@ $rows = 5; // 每张5行
 $cols = 6; // 每张6列
 $oi_file = $movie_path . "/image_group/%d.jpg";
 
-$shell = "ffmpeg -analyzeduration 100000000 -i {$mp4_file} -vsync 0 -ss {$thumb_start} -frames:v 1 -s {$thumb_width}x{$thumb_height} -f image2 -y {$thumb_file}";
-$shell .= " -vsync 1 -vf 'fps=1/{$oi_interval},scale={$oi_width}:{$oi_height},tile={$cols}x{$rows}' -f image2 -y {$oi_file}";
+$shell = "ffmpeg -analyzeduration 100000000 -i '{$mp4_file}' -vsync 0 -ss {$thumb_start} -frames:v 1 -s {$thumb_width}x{$thumb_height} -f image2 -y '{$thumb_file}'";
+$shell .= " -vsync 1 -vf 'fps=1/{$oi_interval},scale={$oi_width}:{$oi_height},tile={$cols}x{$rows}' -f image2 -y '{$oi_file}'";
 
 echo PHP_EOL;
 echo $shell, PHP_EOL;
@@ -320,7 +320,7 @@ $sp_long = $sp_to - $sp_from; // 生成快照的视频时长
 $sp_interval = $sp_long / $sp_count; // 生成快照的时间间隙
 $sp_file = $movie_path . '/stage_photo/%03d.jpg';
 
-$shell = "ffmpeg -analyzeduration 100000000 -ss {$sp_from} -i {$mp4_file} -map 0:v -t {$sp_long} -vf 'fps=fps=1/{$sp_interval}' -f image2 -y {$sp_file}";
+$shell = "ffmpeg -analyzeduration 100000000 -ss {$sp_from} -i '{$mp4_file}' -map 0:v -t {$sp_long} -vf 'fps=fps=1/{$sp_interval}' -f image2 -y '{$sp_file}'";
 
 echo PHP_EOL;
 echo $shell, PHP_EOL;
